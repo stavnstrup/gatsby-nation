@@ -1,16 +1,6 @@
-.linkBox {
-  display: flex;
-}
-
-.quickLinks {
-  flex-grow: 1;
-}
-
-.gitLinks {
-  flex-grow: 2;
-}
-
 // Statistix boxes
+@import "bourbon/bourbon";
+@import "base";
 
 .statistics {
   display: flex;

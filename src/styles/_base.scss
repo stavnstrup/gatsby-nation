@@ -27,10 +27,9 @@ $header-color: #222;
 html,
 body {
   background: $background-color;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: $font-size;
 }
-
 
 div,
 dl,
@@ -56,7 +55,7 @@ td {
   padding: 0;
 }
 
-.main-content {
+.mainContent {
   margin: 0 auto;
   max-width: 100%;
   min-width: 768px;
@@ -64,8 +63,8 @@ td {
   width: 1000px;
 }
 
-.nisp-hero {
-  background: $nisp-hero-bg url('/assets/images/skyline.jpg') no-repeat scroll 0% 60%;
+.nispHero {
+  background: $nisp-hero-bg url("/skyline.jpg") no-repeat scroll 0% 60%;
   border-bottom: 3px solid $nisp-hero-bottom;
   height: 150px;
   width: 100%;
@@ -78,11 +77,10 @@ td {
   }
 }
 
-.nisp-content {
+.nispContent {
   margin-top: 32px;
   padding: 0 16px;
 }
-
 
 h1,
 h2,
@@ -91,7 +89,7 @@ h4,
 h5,
 h6 {
   color: $header-color;
-  font-family: "Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: bold;
   line-height: 1.1;
@@ -107,7 +105,6 @@ h2 {
 h4 {
   font-size: 24px;
 }
-
 
 p {
   line-height: 1.6;
@@ -146,7 +143,7 @@ a:visited {
 }
 
 a:link {
-    color: #c63;
+  color: #c63;
 }
 
 a,
