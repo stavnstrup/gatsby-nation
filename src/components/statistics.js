@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "gatsby"
 import "../styles/main.scss"
 
 const Statistics = () => {
@@ -18,64 +19,64 @@ const Statistics = () => {
   return (
     <div className="statistics">
       <div className="statElement">
-        <a href="/standard/">
+        <Link to="/standard/">
           <p className="number">{stat["standards"]}</p>
           <p className="label">Standards</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/coverdoc/">
+        <Link to="/coverdoc/">
           <p className="number">{stat["coverdocs"]}</p>
           <p className="label">Cover Documents</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/bsp/">
+        <Link to="/bsp/">
           <p className="number">{stat["basicstandardsprofile"]}</p>
           <p className="label">Basic Standards Profile</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/capabilityprofile/">
+        <Link to="/capabilityprofile/">
           <p className="number">{stat["capabilityprofiles"]}</p>
           <p className="label">Capability Profiles</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/profile/">
+        <Link to="/profile/">
           <p className="number">{stat["profiles"]}</p>
           <p className="label">Profiles</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/serviceprofile/">
+        <Link to="/serviceprofile/">
           <p className="number">{stat["serviceprofiles"]}</p>
           <p className="label">Service Profiles</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/profilespec/">
+        <Link to="/profilespec/">
           <p className="number">{stat["profilespecs"]}</p>
           <p className="label">Profile Specifications</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/organization/">
+        <Link to="/organization/">
           <p className="number">{stat["organizations"]}</p>
           <p className="label">Organizations</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/responsibleparty/">
+        <Link to="/responsibleparty/">
           <p className="number">{stat["responsibleparties"]}</p>
           <p className="label">Responsible Parties</p>
-        </a>
+        </Link>
       </div>
       <div className="statElement">
-        <a href="/node/">
+        <Link to="/node/">
           <p className="number">{stat["nodes"]}</p>
           <p className="label">Taxonomy Nodes</p>
-        </a>
+        </Link>
       </div>
     </div>
   )
