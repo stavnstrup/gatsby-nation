@@ -1,12 +1,12 @@
 // Element pages
 // Covers Capability Profile
 
-.data-label {
+.dataLabel {
   font-weight: bold;
   padding-bottom: 6px;
 }
 
-.data-value {
+.dataValue {
   background-color: rgba(255, 165, 0, 0.3);
   border: 1px solid rgb(209, 213, 218);
   border-radius: 3px;
@@ -15,19 +15,18 @@
   padding: 8px;
 }
 
-
-.meta-block {
+.metaBlock {
   margin: 0 0 16px;
   padding: 8px 0;
 }
 
-.meta-element-set {
+.metaElementSet {
   display: flex;
   flex-flow: row;
   margin-top: 20px;
 }
 
-.meta-list {
+.metaList {
   margin: 0 0 16px 16px;
   padding: 8px 0;
 }
@@ -42,11 +41,9 @@
   flex-grow: 3;
 }
 
-
 // Element specification
 
-
-.element-head {
+.elementHead {
   background-color: $nisp-hero-bottom;
   color: $nisp-hero-color;
   display: flex;
@@ -68,7 +65,7 @@
   }
 }
 
-.home-icon {
+.homeIcon {
   display: inline-block;
   height: 24px;
   padding-left: 5px;
@@ -76,7 +73,7 @@
   width: 24px;
 }
 
-.element-content {
+.elementContent {
   margin-top: 32px;
 
   h1,
@@ -92,8 +89,7 @@
   }
 }
 
-
-.element-title {
+.elementTitle {
   font-size: 1.8rem;
 }
 
@@ -119,7 +115,7 @@ h4 {
   margin-top: 16px;
 }
 
-.history-box {
+.historyBox {
   display: flex;
   justify-content: left;
   //justify-content: center;
@@ -137,8 +133,6 @@ h4 {
   margin-top: 20px;
   padding-top: 8px;
 }
-
-
 
 // .capability-color {
 //   background-color: red;
