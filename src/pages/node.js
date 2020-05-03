@@ -2,7 +2,7 @@ import React from "react"
 import Element from "../components/element"
 
 const node = () => {
-  return <Element></Element>
+  return <Element type="Taxonomy Nodes"></Element>
 }
 
 export default node

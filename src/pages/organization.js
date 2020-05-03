@@ -2,7 +2,7 @@ import React from "react"
 import Element from "../components/element"
 
 const organization = () => {
-  return <Element></Element>
+  return <Element type="Organizations"></Element>
 }
 
 export default organization

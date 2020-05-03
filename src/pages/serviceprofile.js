@@ -2,7 +2,7 @@ import React from "react"
 import Element from "../components/element"
 
 const serviceprofile = () => {
-  return <Element></Element>
+  return <Element type="Service Profiles"></Element>
 }
 
 export default serviceprofile
