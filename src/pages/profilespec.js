@@ -1,8 +1,8 @@
 import React from "react"
 import Element from "../components/element"
 
-const profilespec = () => {
+const ProfilespecList = () => {
   return <Element type="Profile Specifications"></Element>
 }
 
-export default profilespec
+export default ProfilespecList

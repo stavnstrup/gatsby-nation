@@ -1,8 +1,8 @@
 import React from "react"
 import Element from "../components/element"
 
-const standard = () => {
+const StandardList = () => {
   return <Element type="Standards"></Element>
 }
 
-export default standard
+export default StandardList
