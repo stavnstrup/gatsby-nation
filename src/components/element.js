@@ -3,6 +3,10 @@ import { Link } from "gatsby"
 import Footer from "../components/footer"
 import HomeIcon from "../images/home.svg"
 
+// import "normalize.min.css"
+
+import "../styles/main.scss"
+
 const Element = prop => {
   return (
     <>
