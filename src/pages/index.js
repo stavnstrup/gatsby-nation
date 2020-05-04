@@ -1,6 +1,7 @@
 import React from "react"
 import LayoutHome from "../components/layouthome"
 import Statistics from "../components/statistics"
+import Head from "../components/head"
 
 import "../styles/main.scss"
 
@@ -10,6 +11,7 @@ const archiveLocation = "https://archive.nisp.nw3.dk"
 
 const IndexPage = () => (
   <LayoutHome title="The NISP Nation">
+    <Head />
     <p>
       The NISP tools and the NISP database viewer are continously being updated,
       but only officially released once a year.

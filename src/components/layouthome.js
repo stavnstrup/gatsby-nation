@@ -2,8 +2,6 @@ import React from "react"
 import Layout from "./layout"
 import Footer from "./footer"
 
-import "../styles/main.scss"
-
 const LayoutHome = prop => {
   return (
     <Layout>

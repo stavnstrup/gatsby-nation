@@ -1,6 +1,5 @@
 import React from "react"
 import { Link } from "gatsby"
-import "../styles/main.scss"
 
 const Statistics = () => {
   const stat = {
