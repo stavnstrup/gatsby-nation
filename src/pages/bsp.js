@@ -12,6 +12,7 @@ const BSP = () => {
         edges {
           node {
             frontmatter {
+              layout
               nisp_id
               type
               title

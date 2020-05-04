@@ -15,6 +15,7 @@ const CapabilityprofileList = () => {
         edges {
           node {
             frontmatter {
+              layout
               nisp_id
               title
               profilespec {
