@@ -14,7 +14,7 @@ const CoverdocList = () => {
         edges {
           node {
             frontmatter {
-              nisp_id
+              nispid
               document {
                 pubnum
                 title
@@ -38,10 +38,10 @@ const CoverdocList = () => {
           </tr>
           {data.allMarkdownRemark.edges.map(edge => {
             return (
-              <tr>
+              <tr key={edge.node.frontmatter.nispid}>
                 <td>{edge.node.frontmatter.document.pubnum}</td>
                 <td>
-                  <Link to={`/coverdoc/${edge.node.frontmatter.nisp_id}.html`}>
+                  <Link to={`/coverdoc/${edge.node.frontmatter.nispid}.html`}>
                     {edge.node.frontmatter.document.title}
                   </Link>
                 </td>

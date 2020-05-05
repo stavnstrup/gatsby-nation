@@ -13,7 +13,7 @@ const BSP = () => {
           node {
             frontmatter {
               layout
-              nisp_id
+              nispid
               type
               title
             }
@@ -36,10 +36,10 @@ const BSP = () => {
             .filter(edge => edge.node.frontmatter.type === "bsp")
             .map(edge => {
               return (
-                <tr>
+                <tr key={edge.node.frontmatter.nispid}>
                   <td>
                     <Link
-                      to={`/serviceprofile/${edge.node.frontmatter.nisp_id}.html`}
+                      to={`/serviceprofile/${edge.node.frontmatter.nispid}.html`}
                     >
                       {edge.node.frontmatter.title}
                     </Link>

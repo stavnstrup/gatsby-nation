@@ -1,6 +1,7 @@
 import React from "react"
 import Element from "../components/element"
 import { Link, graphql, useStaticQuery } from "gatsby"
+import orgs from "../data/data/orgs.json"
 
 // import "../styles/normalize.min.css"
 // import "../styles/main.scss"
@@ -16,7 +17,7 @@ const CapabilityprofileList = () => {
           node {
             frontmatter {
               layout
-              nisp_id
+              nispid
               title
               profilespec {
                 org
@@ -46,17 +47,17 @@ const CapabilityprofileList = () => {
           </tr>
           {data.allMarkdownRemark.edges.map(edge => {
             return (
-              <tr>
+              <tr key={edge.node.frontmatter.nispid}>
                 <td>
                   <Link
                     to={`/organization/${edge.node.frontmatter.profilespec.org}.html`}
                   >
-                    {edge.node.frontmatter.profilespec.org}
+                    {orgs[edge.node.frontmatter.profilespec.org].short}
                   </Link>
                 </td>
                 <td>
                   <Link
-                    to={`/capabilityprofile/${edge.node.frontmatter.nisp_id}.html`}
+                    to={`/capabilityprofile/${edge.node.frontmatter.nispid}.html`}
                   >
                     {edge.node.frontmatter.title}
                   </Link>

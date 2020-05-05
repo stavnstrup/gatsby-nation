@@ -1,20 +1,8 @@
 import React from "react"
 import { Link } from "gatsby"
+import stat from "../data/data/stat.json"
 
 const Statistics = () => {
-  const stat = {
-    standards: 1286,
-    coverdocs: 67,
-    basicstandardsprofile: 1,
-    capabilityprofiles: 37,
-    profiles: 110,
-    serviceprofiles: 346,
-    profilespecs: 24,
-    organizations: 67,
-    responsibleparties: 50,
-    nodes: 1679,
-  }
-
   return (
     <div className="statistics">
       <div className="statElement">
