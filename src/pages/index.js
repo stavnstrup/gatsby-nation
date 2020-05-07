@@ -40,9 +40,9 @@ const IndexPage = () => (
     </ul>
     <hr />
     <div className="linkBox">
-      <div class="quickLinks">
+      <div className="quickLinks">
         <h4>Go see draft stuff</h4>
-        <ul class="daily">
+        <ul className="daily">
           <li>
             <a href={`${liveLocation}`}>See the latest draft of NISP</a>
           </li>

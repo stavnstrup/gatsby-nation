@@ -1,6 +1,6 @@
 // Standard Collections
 
-.collection-wrap {
+.collectionWrap {
   display: flex;
   flex-flow: row;
   flex-grow: 1;
@@ -8,13 +8,16 @@
   margin-top: 24px;
 }
 
-.collection-group {
+.collectionGroup {
+  //display: flex;
+  //flex-wrap: wrap;
+
   border-bottom: solid 1px $nisp-gray;
   margin: 12px;
   min-width: 30%;
-
   h4 {
     margin-top: 0;
+    //margin-bottom: 16px;
     // text-align: center;
   }
 
@@ -23,19 +26,22 @@
   }
 }
 
+.stdgroup1 {
+  list-style-position: inside;
+  margin-top: 16px;
+}
 
-.collection-item {
+.collectionItem {
   list-style-type: none;
   margin-bottom: 5px;
   padding-left: 8px;
-
 }
 
-.std-complete {
+.stdComplete {
   border-left: 7px solid $std-complete;
 }
 
-.std-incomplete {
+.stdIncomplete {
   border-left: 7px solid $std-incomplete;
 }
 
