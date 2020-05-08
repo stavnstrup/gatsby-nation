@@ -1,6 +1,6 @@
 import React from 'react'
 import Element from '../components/element'
-import { Link, graphql, useStaticQuery } from 'gatsby'
+import { graphql, useStaticQuery } from 'gatsby'
 import ListAllOrgStandards from '../components/listallorgstandards'
 
 // import orglist from '../data/data/orgs.json'
@@ -18,7 +18,7 @@ const StandardList = () => {
             frontmatter {
               key
               short
-              stuff {
+              stats {
                 standards {
                   owns
                 }
@@ -31,8 +31,6 @@ const StandardList = () => {
   `)
 
   const orglist = orgQuery.allMarkdownRemark.edges
-
-  console.log(orglist)
 
   return (
     <Element type="Standards">
@@ -49,27 +47,15 @@ const StandardList = () => {
 
       <div className="collectionWrap">
         {/* List all organization which own one or more standards */}
-        {/*
-          .filter(edge => edge.node.frontmatter.key === 'cceb')
-         */}
         {orgQuery.allMarkdownRemark.edges
-          .filter(edge => edge.node.frontmatter.stuff.standards.owns > 0)
-
+          .filter(edge => edge.node.frontmatter.stats.standards.owns > 0)
           .map(edge => {
             return (
-              <div key={edge.node.frontmatter.key} className="collectionGroup">
-                <h4>
-                  <Link to={`/organization/${edge.node.frontmatter.key}.html`}>
-                    {edge.node.frontmatter.short}
-                  </Link>
-                </h4>
-
-                <ListAllOrgStandards
-                  org={edge.node.frontmatter.key}
-                  max={edge.node.frontmatter.stuff.standards.owns}
-                />
-                {/* end of collectionGroup*/}
-              </div>
+              <ListAllOrgStandards
+                org={edge.node.frontmatter.key}
+                short={edge.node.frontmatter.short}
+                numStandards={edge.node.frontmatter.stats.standards.owns}
+              />
             )
           })}
       </div>

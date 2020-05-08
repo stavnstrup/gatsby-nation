@@ -9,16 +9,11 @@
 }
 
 .collectionGroup {
-  //display: flex;
-  //flex-wrap: wrap;
-
   border-bottom: solid 1px $nisp-gray;
   margin: 12px;
   min-width: 30%;
   h4 {
     margin-top: 0;
-    //margin-bottom: 16px;
-    // text-align: center;
   }
 
   ul {
@@ -26,7 +21,7 @@
   }
 }
 
-.stdgroup1 {
+.stdgroup {
   list-style-position: inside;
   margin-top: 16px;
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, graphql, useStaticQuery } from 'gatsby'
 
-const ListAllOrgStandards = ({ org, max }) => {
+const ListAllOrgStandards = ({ org, short, numStandards }) => {
   const standardQuery = useStaticQuery(graphql`
     query {
       allMarkdownRemark(
@@ -29,14 +29,17 @@ const ListAllOrgStandards = ({ org, max }) => {
 
   const standards = standardQuery.allMarkdownRemark.edges
 
+  //  Create slice array, so that we only list 10 standards in one block.
+
   let counter = 0
-  let delta = 10
+  let boxSize = 10
   let sliceArray = []
 
-  while (counter < max) {
-    let top = Math.min(counter + delta, max)
+  // identify the start and end of a slice in the list of standards
+  while (counter < numStandards) {
+    let top = Math.min(counter + boxSize, numStandards)
     sliceArray.push({ start: counter, end: top })
-    counter = counter + delta
+    counter = counter + boxSize
   }
 
   return (
@@ -48,8 +51,10 @@ const ListAllOrgStandards = ({ org, max }) => {
               edge => edge.node.frontmatter.document.org === org
             )}
             org={org}
+            short={short}
             start={slice.start}
             end={slice.end}
+            numStandards={numStandards}
           />
         )
       })}
@@ -57,30 +62,58 @@ const ListAllOrgStandards = ({ org, max }) => {
   )
 }
 
-const ListStandardGroup = ({ standards, org, start, end }) => {
+const orgHeader = (org, short) => {
   return (
-    <ul className="stdgroup">
-      {standards.slice(start, end).map((edge, index) => {
-        const complete = edge.node.frontmatter.complete
-          ? 'Complete'
-          : 'Incomplete'
-        return (
-          <>
-            <li
-              key={edge.node.frontmatter.nispid}
-              className={`collectionItem std${complete}`}
-            >
-              <Link
-                to={`/standard/${edge.node.frontmatter.nispid}.html`}
-                title={edge.node.frontmatter.document.title}
+    <h4>
+      <Link to={`/organization/${org}.html`}>{short}</Link>
+    </h4>
+  )
+}
+
+const ListStandardGroup = ({
+  standards,
+  org,
+  short,
+  start,
+  end,
+  numStandards,
+}) => {
+  return (
+    <div key={org} className="collectionGroup">
+      {/*
+      <p>
+        <i>{short}</i>
+      </p>
+      <p>
+        {end - start} nodes [{start},{end - 1}] / {numStandards}
+      </p>
+*/}
+      {start === 0 ? orgHeader(org, short) : ''}
+
+      <ul className="stdgroup">
+        {standards.slice(start, end).map(edge => {
+          const complete = edge.node.frontmatter.complete
+            ? 'Complete'
+            : 'Incomplete'
+          return (
+            <>
+              <li
+                key={edge.node.frontmatter.nispid}
+                className={`collectionItem std${complete}`}
               >
-                {edge.node.frontmatter.document.pubnum}
-              </Link>
-            </li>
-          </>
-        )
-      })}
-    </ul>
+                <Link
+                  to={`/standard/${edge.node.frontmatter.nispid}.html`}
+                  title={edge.node.frontmatter.document.title}
+                >
+                  {edge.node.frontmatter.document.pubnum}
+                </Link>
+              </li>
+            </>
+          )
+        })}
+      </ul>
+      {/* end of collectionGroup*/}
+    </div>
   )
 }
 

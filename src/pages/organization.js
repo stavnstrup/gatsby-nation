@@ -1,6 +1,6 @@
-import React from "react"
-import Element from "../components/element"
-import { Link, graphql, useStaticQuery } from "gatsby"
+import React from 'react'
+import Element from '../components/element'
+import { Link, graphql, useStaticQuery } from 'gatsby'
 
 const OrganizationList = () => {
   const data = useStaticQuery(graphql`
@@ -15,8 +15,11 @@ const OrganizationList = () => {
               nispid
               short
               long
-              stuff {
+              stats {
                 standards {
+                  owns
+                }
+                coverdocs {
                   owns
                 }
                 capabilityprofiles {
@@ -52,10 +55,10 @@ const OrganizationList = () => {
                 title={edge.node.frontmatter.long}
               >
                 {edge.node.frontmatter.short}
-              </Link>{" "}
-              ({edge.node.frontmatter.stuff.standards.owns},{" "}
-              {edge.node.frontmatter.stuff.capabilityprofiles.owns},{" "}
-              {edge.node.frontmatter.stuff.profiles.owns},{" "}
+              </Link>{' '}
+              ({edge.node.frontmatter.stuff.standards.owns},{' '}
+              {edge.node.frontmatter.stuff.capabilityprofiles.owns},{' '}
+              {edge.node.frontmatter.stuff.profiles.owns},{' '}
               {edge.node.frontmatter.stuff.serviceprofiles.owns})
             </li>
           )
