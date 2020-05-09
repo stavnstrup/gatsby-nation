@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
 const OrganizationTemplate = () => {
-  return <div></div>
+  return <div>Organisation </div>
 }
 
 export default OrganizationTemplate

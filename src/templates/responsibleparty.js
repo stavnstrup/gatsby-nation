@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
 const ResponsiblePartyTemplate = () => {
-  return <div></div>
+  return <div>Responsible Party</div>
 }
 
 export default ResponsiblePartyTemplate

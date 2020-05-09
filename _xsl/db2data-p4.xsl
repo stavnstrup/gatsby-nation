@@ -180,9 +180,9 @@
 <xsl:template match="standard|coverdoc" mode="makepage">
   <xsl:variable name="myorg" select="document/@orgid"/>
   <xsl:variable name="orgname" select="ancestor::standards/organisations/orgkey[@key=$myorg]/@short"/>
-  <xsl:variable name="url" select="status/uri"/>
+  <xsl:variable name="uri" select="status/uri"/>
   <xsl:choose>
-    <xsl:when test="status/url=''">
+    <xsl:when test="status/uri=''">
       <xsl:if test="$orgname">
         <xsl:value-of select="$orgname"/>
         <xsl:text> </xsl:text>
@@ -193,7 +193,7 @@
     </xsl:when>
     <xsl:otherwise>
       <a>
-        <xsl:attribute name="href"><xsl:value-of select="$url"/></xsl:attribute>
+        <xsl:attribute name="href"><xsl:value-of select="$uri"/></xsl:attribute>
         <xsl:if test="$orgname">
           <xsl:value-of select="$orgname"/>
           <xsl:text> </xsl:text>
@@ -459,7 +459,6 @@
 <xsl:text>  title: "</xsl:text><xsl:value-of select="normalize-space(document/@title)"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>  date: "</xsl:text><xsl:value-of select="document/@date"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>  version: "</xsl:text><xsl:value-of select="document/@version"/><xsl:text>"&#x0A;</xsl:text>
-<xsl:text>applicability:</xsl:text><xsl:apply-templates select="applicability"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>rp: </xsl:text><xsl:value-of select="responsibleparty/@rpref"/><xsl:text>&#x0A;</xsl:text>
 <xsl:apply-templates select="status"/>
 <xsl:apply-templates select="uuid"/>
@@ -468,6 +467,7 @@
 <xsl:text>consumers:&#x0A;</xsl:text>
 <xsl:apply-templates select="/*//serviceprofile/refgroup/refstandard[@refid=$myid]" mode="sp-to-sd"/>
 <xsl:text>---&#x0A;</xsl:text>
+<xsl:text></xsl:text><xsl:apply-templates select="applicability"/><xsl:text>&#x0A;</xsl:text>
 </xsl:result-document>
 </xsl:if>
 </xsl:template>
@@ -482,7 +482,7 @@
 
 <xsl:template match="status">
 <xsl:text>status:&#x0A;</xsl:text>
-<xsl:text>  uri: </xsl:text><xsl:value-of select="uri"/><xsl:text>&#x0A;</xsl:text>
+<xsl:text>  uri: "</xsl:text><xsl:value-of select="uri"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>  history: &#x0A;</xsl:text>
 <xsl:apply-templates select="history/event"/>
 </xsl:template>
@@ -495,14 +495,13 @@
 
 <xsl:template match="event">
 <xsl:text>    - flag: </xsl:text><xsl:value-of select="@flag"/><xsl:text>&#x0A;</xsl:text>
-<xsl:text>      date: </xsl:text><xsl:value-of select="@date"/><xsl:text>&#x0A;</xsl:text>
+<xsl:text>      date: "</xsl:text><xsl:value-of select="@date"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>      rfcp: </xsl:text><xsl:value-of select="@rfcp"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>      version: </xsl:text><xsl:value-of select="@version"/><xsl:text>&#x0A;</xsl:text>
 </xsl:template>
 
 <xsl:template match="applicability">
 <xsl:if test="count(./node()) &gt; 0">
-<xsl:text> >2&#x0A;</xsl:text>
 <xsl:apply-templates/>
 </xsl:if>
 </xsl:template>
@@ -563,7 +562,7 @@
 <xsl:text>key: </xsl:text><xsl:value-of select="@key"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>short: </xsl:text><xsl:value-of select="@short"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>long: </xsl:text><xsl:value-of select="@long"/><xsl:text>&#x0A;</xsl:text>
-<xsl:text>uri: </xsl:text><xsl:value-of select="@uri"/><xsl:text>&#x0A;</xsl:text>
+<xsl:text>uri: "</xsl:text><xsl:value-of select="@uri"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>stats:&#x0A;</xsl:text>
 
 <xsl:text>  standards:&#x0A;</xsl:text>

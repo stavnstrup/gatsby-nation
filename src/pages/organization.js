@@ -42,9 +42,9 @@ const OrganizationList = () => {
   return (
     <Element type="Organizations">
       <p>
-        Each organisation is postfixed by a tupple with four values, which shows
-        how the organisations creates/owns a number of standards, capability
-        profiles, profiles and service profiles.
+        Each organisation is postfixed by a tupple with five values, which shows
+        how the organisations creates/owns a number of standards, cover
+        documents, capability profiles, profiles and service profiles.
       </p>
       <ul>
         {data.allMarkdownRemark.edges.map(edge => {
@@ -56,10 +56,11 @@ const OrganizationList = () => {
               >
                 {edge.node.frontmatter.short}
               </Link>{' '}
-              ({edge.node.frontmatter.stuff.standards.owns},{' '}
-              {edge.node.frontmatter.stuff.capabilityprofiles.owns},{' '}
-              {edge.node.frontmatter.stuff.profiles.owns},{' '}
-              {edge.node.frontmatter.stuff.serviceprofiles.owns})
+              ({edge.node.frontmatter.stats.standards.owns},{' '}
+              {edge.node.frontmatter.stats.coverdocs.owns},{' '}
+              {edge.node.frontmatter.stats.capabilityprofiles.owns},{' '}
+              {edge.node.frontmatter.stats.profiles.owns},{' '}
+              {edge.node.frontmatter.stats.serviceprofiles.owns})
             </li>
           )
         })}

@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
 const ProfileTemplate = () => {
-  return <div></div>
+  return <div>Profile</div>
 }
 
 export default ProfileTemplate

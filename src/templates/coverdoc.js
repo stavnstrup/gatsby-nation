@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
 const CoverdocTemplate = () => {
-  return <div></div>
+  return <div>Cover Document</div>
 }
 
 export default CoverdocTemplate

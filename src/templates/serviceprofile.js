@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
 const ServiceProfileTemplate = () => {
-  return <div></div>
+  return <div>Service Profile</div>
 }
 
 export default ServiceProfileTemplate

@@ -1,7 +1,7 @@
-import React from "react"
+import React from 'react'
 
 const NodeTemplate = () => {
-  return <div></div>
+  return <div>Node</div>
 }
 
 export default NodeTemplate
