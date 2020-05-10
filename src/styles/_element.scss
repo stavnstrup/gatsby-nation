@@ -31,13 +31,13 @@
   padding: 8px 0;
 }
 
-.ref-org,
-.ref-date,
-.ref-version {
+.refOrg,
+.refDate,
+.refVersion {
   flex-grow: 1;
 }
 
-.ref-pubnum {
+.refPubnum {
   flex-grow: 3;
 }
 
@@ -85,7 +85,7 @@
   dd,
   dt {
     // font-size: 1.4rem;
-    margin: 0 16px;
+    margin: 0 16px 0 0;
   }
 }
 

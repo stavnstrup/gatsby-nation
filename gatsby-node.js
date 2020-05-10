@@ -30,3 +30,30 @@ module.exports.createPages = async ({ graphql, actions }) => {
     })
   })
 }
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  const typeDefs = `
+    type MarkdownRemark implements Node {
+      frontmatter: Frontmatter
+    }
+    type Frontmatter {
+      stats: MarkdownRemarkFrontmatterStats
+    }
+    type MarkdownRemarkFrontmatterStats {
+      capabilityprofiles: MarkdownRemarkFrontmatterStatsCapabilityprofiles
+      profiles: MarkdownRemarkFrontmatterStatsProfiles
+      serviceprofiles: MarkdownRemarkFrontmatterStatsServiceprofiles
+    }
+    type MarkdownRemarkFrontmatterStatsCapabilityprofiles {
+      references: [String]
+    }
+    type MarkdownRemarkFrontmatterStatsProfiles {
+      references: [String]
+    }
+    type MarkdownRemarkFrontmatterStatsServiceprofiles {
+      references: [String]
+    }
+    `
+  createTypes(typeDefs)
+}

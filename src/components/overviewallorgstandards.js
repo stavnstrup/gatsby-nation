@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, graphql, useStaticQuery } from 'gatsby'
 
-const ListAllOrgStandards = ({ org, short, numStandards }) => {
+const OverviewAllOrgStandards = ({ org, short, numStandards }) => {
   const standardQuery = useStaticQuery(graphql`
     query {
       allMarkdownRemark(
@@ -117,4 +117,4 @@ const ListStandardGroup = ({
   )
 }
 
-export default ListAllOrgStandards
+export default OverviewAllOrgStandards

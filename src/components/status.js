@@ -1,16 +1,15 @@
 import React from 'react'
-import Uri from './uri'
+import URI from './uri'
 
 const Status = ({ status }) => {
   return (
     <>
       <h3>Status</h3>
-
       <div className="metaBlock">
         <dl>
           <dt className="dataLabel">URI</dt>
           <dd className="dataValue">
-            <Uri uri={status.uri} />
+            <URI uri={status.uri} />
           </dd>
         </dl>
 

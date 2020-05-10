@@ -1,7 +1,7 @@
 import React from 'react'
 import Element from '../components/element'
 import { graphql, useStaticQuery } from 'gatsby'
-import ListAllOrgStandards from '../components/listallorgstandards'
+import OverviewAllOrgStandards from '../components/overviewallorgstandards'
 
 // import orglist from '../data/data/orgs.json'
 
@@ -51,7 +51,7 @@ const StandardList = () => {
           .filter(edge => edge.node.frontmatter.stats.standards.owns > 0)
           .map(edge => {
             return (
-              <ListAllOrgStandards
+              <OverviewAllOrgStandards
                 org={edge.node.frontmatter.key}
                 short={edge.node.frontmatter.short}
                 numStandards={edge.node.frontmatter.stats.standards.owns}

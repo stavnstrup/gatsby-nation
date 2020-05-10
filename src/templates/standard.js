@@ -1,6 +1,7 @@
 import React from 'react'
 import Element from '../components/element'
 import Status from '../components/status'
+import UUID from '../components/uuid'
 import { graphql } from 'gatsby'
 
 export const query = graphql`
@@ -77,11 +78,7 @@ const StandardTemplate = props => {
       </dl>
 
       <Status status={standard.frontmatter.status} />
-
-      <dl>
-        <dt className="dataLabel">UUID</dt>
-        <dd className="dataValue">{standard.frontmatter.uuid}</dd>
-      </dl>
+      <UUID uuid={standard.frontmatter.uuid} />
     </Element>
   )
 }

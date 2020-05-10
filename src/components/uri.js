@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'gatsby'
 
-const Uri = ({ uri }) => {
+const URI = ({ uri }) => {
   if (uri) return <Link to={uri}>{uri}</Link>
+  else return null
 }
 
-export default Uri
+export default URI
