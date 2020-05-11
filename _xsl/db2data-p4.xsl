@@ -8,15 +8,22 @@
 <xsl:output method="text" indent="yes"/>
 
 <xsl:template match="standards">
-  <xsl:apply-templates select="records"/>
+  <xsl:apply-templates select="records" mode="standard-json"/>
+  <xsl:apply-templates select="records" mode="coverdoc-json"/>
+  <xsl:apply-templates select="records" mode="profile-json"/>
+  <xsl:apply-templates select="records" mode="profilespec-json"/>
+  <xsl:apply-templates select="records" mode="serviceprofile-json"/>
   <xsl:apply-templates select="organisations"/>
-  <xsl:apply-templates select="organisations" mode="data"/>
   <xsl:apply-templates select="responsibleparties"/>
-  <xsl:apply-templates select="responsibleparties" mode="data"/>
   <xsl:apply-templates select="taxonomy"/>
   <xsl:apply-templates select="taxonomy" mode="html-taxonomy"/>
+
+  <!--
   <xsl:apply-templates select="taxonomy" mode="json-taxonomy"/>
-  <xsl:apply-templates select="taxonomy" mode="data"/>
+  <xsl:apply-templates select="taxonomy" mode="json"/>
+  -->
+  <xsl:apply-templates select="organisations" mode="json"/>
+  <xsl:apply-templates select="responsibleparties" mode="json"/>
   <xsl:result-document href="_data/stat.json">
     <xsl:text>{</xsl:text>
     <xsl:text>"capabilityprofiles": "</xsl:text><xsl:value-of select="count(records/profile[@toplevel='yes'])"/><xsl:text>",</xsl:text>
@@ -32,6 +39,51 @@
     <xsl:text>}</xsl:text>
   </xsl:result-document>
 </xsl:template>
+
+<!-- Process all standards and profiles -->
+
+<xsl:template match="records">
+  <xsl:apply-templates select="profile[@toplevel='yes']" mode="makegraph"/>
+  <xsl:apply-templates select="profile[@toplevel='yes']" mode="makepage"/>
+  <!-- Process all standard and profiles -->
+  <xsl:apply-templates select="standard"/>
+  <xsl:apply-templates select="coverdoc"/>
+  <xsl:apply-templates select="profile"/>
+  <xsl:apply-templates select="serviceprofile"/>
+  <xsl:apply-templates select="profilespec"/>
+
+  <!-- List all events in descending order in all standards and profiles -->
+  <xsl:result-document href="_data/events.json">
+    <xsl:text>[</xsl:text>
+    <xsl:apply-templates select=".//event" mode="allevents">
+      <xsl:sort select="@date" order="descending"/>
+    </xsl:apply-templates>
+    <xsl:text>{"rec": "0", "nispid": "", "tag": "", "date": "", "flag": "", "version": "0.0"}</xsl:text>
+    <xsl:text>]</xsl:text>
+  </xsl:result-document>
+</xsl:template>
+
+
+<xsl:template match="event" mode="allevents">
+  <xsl:text>{</xsl:text>
+  <xsl:text>"rec": "</xsl:text><xsl:number from="standards" count="standard|serviceprofile|profile" format="1" level="any"/><xsl:text>", </xsl:text>
+  <xsl:text>"nispid": "</xsl:text><xsl:value-of select="../../../@id"/><xsl:text>",</xsl:text>
+  <xsl:choose>
+    <xsl:when test="ancestor::standard">
+      <xsl:text>"tag": "</xsl:text><xsl:value-of select="../../../@tag"/><xsl:text>",</xsl:text>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:text>"tag": "</xsl:text><xsl:value-of select="../../../@title"/><xsl:text>",</xsl:text>
+    </xsl:otherwise>
+  </xsl:choose>
+  <xsl:text>"date": "</xsl:text><xsl:value-of select="@date"/><xsl:text>",</xsl:text>
+  <xsl:text>"flag": "</xsl:text><xsl:value-of select="@flag"/><xsl:text>",</xsl:text>
+  <xsl:text>"rfcp": "</xsl:text><xsl:value-of select="@rfcp"/><xsl:text>",</xsl:text>
+  <xsl:text>"version": "</xsl:text><xsl:value-of select="@version"/><xsl:text>"</xsl:text>
+  <xsl:text>},</xsl:text>
+</xsl:template>
+
+
 
 <!-- Create a graph illustrating the composite structure of profile with toplevel="yes" (capability profiles) -->
 
@@ -234,49 +286,9 @@
 </xsl:template>
 
 
-<!-- Process all standards and profiles -->
-
-<xsl:template match="records">
-  <xsl:apply-templates select="profile[@toplevel='yes']" mode="makegraph"/>
-  <xsl:apply-templates select="profile[@toplevel='yes']" mode="makepage"/>
-  <!-- Process all standard and profiles -->
-  <xsl:apply-templates select="standard"/>
-  <xsl:apply-templates select="coverdoc"/>
-  <xsl:apply-templates select="profile"/>
-  <xsl:apply-templates select="serviceprofile"/>
-  <xsl:apply-templates select="profilespec"/>
-  <!-- List all events in descending order in all standards and profiles -->
-  <xsl:result-document href="_data/events.json">
-    <xsl:text>[</xsl:text>
-    <xsl:apply-templates select=".//event" mode="allevents">
-      <xsl:sort select="@date" order="descending"/>
-    </xsl:apply-templates>
-    <xsl:text>{"rec": "0", "nispid": "", "tag": "", "date": "", "flag": "", "version": "0.0"}</xsl:text>
-    <xsl:text>]</xsl:text>
-  </xsl:result-document>
-</xsl:template>
 
 
-<xsl:template match="event" mode="allevents">
-  <xsl:text>{</xsl:text>
-  <xsl:text>"rec": "</xsl:text><xsl:number from="standards" count="standard|serviceprofile|profile" format="1" level="any"/><xsl:text>", </xsl:text>
-  <xsl:text>"nispid": "</xsl:text><xsl:value-of select="../../../@id"/><xsl:text>",</xsl:text>
-  <xsl:choose>
-    <xsl:when test="ancestor::standard">
-      <xsl:text>"tag": "</xsl:text><xsl:value-of select="../../../@tag"/><xsl:text>",</xsl:text>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:text>"tag": "</xsl:text><xsl:value-of select="../../../@title"/><xsl:text>",</xsl:text>
-    </xsl:otherwise>
-  </xsl:choose>
-  <xsl:text>"date": "</xsl:text><xsl:value-of select="@date"/><xsl:text>",</xsl:text>
-  <xsl:text>"flag": "</xsl:text><xsl:value-of select="@flag"/><xsl:text>",</xsl:text>
-  <xsl:text>"rfcp": "</xsl:text><xsl:value-of select="@rfcp"/><xsl:text>",</xsl:text>
-  <xsl:text>"version": "</xsl:text><xsl:value-of select="@version"/><xsl:text>"</xsl:text>
-  <xsl:text>},</xsl:text>
-</xsl:template>
-
-<!-- Create a YAML page of a Capability Profile -->
+<!-- Create a Markdown page of a Capability Profile -->
 
 <xsl:template match="profile[@type='bsp']"/>
 
@@ -296,7 +308,7 @@
 </xsl:result-document>
 </xsl:template>
 
-<!-- Create a YAML page of a Profile -->
+<!-- Create a Markdown page of a Profile -->
 
 <xsl:template match="profile">
 <xsl:variable name="myid" select="@id"/>
@@ -334,7 +346,7 @@
 <xsl:text>    title: </xsl:text><xsl:value-of select="/standards/records/*[@id=$refid]/@title"/><xsl:text>&#x0A;</xsl:text>
 </xsl:template>
 
-<!-- Create a YAML page of a Service  Profile -->
+<!-- Create a Markdown page of a Service  Profile -->
 
 <xsl:template match="serviceprofile1[@type='bsp']"/>
 
@@ -384,7 +396,7 @@
 <xsl:text>    - refid: </xsl:text><xsl:value-of select="@refid"/><xsl:text>&#x0A;</xsl:text>
 </xsl:template>
 
-<!-- Create a YAML page of a coverdoc -->
+<!-- Create a Markdown page of a coverdoc -->
 
 <xsl:template match="coverdoc">
 <xsl:variable name="myid" select="@id"/>
@@ -419,7 +431,7 @@
 <xsl:template match="coverstandards"><xsl:apply-templates/></xsl:template>
 
 
-<!-- Create a YAML page of a profilespec -->
+<!-- Create a Markdown page of a profilespec -->
 
 <xsl:template match="profilespec">
 <xsl:variable name="myid" select="@myid"/>
@@ -439,7 +451,7 @@
 </xsl:result-document>
 </xsl:template>
 
-<!-- Create a YAML page of a standard -->
+<!-- Create a Markdown page of a standard -->
 
 <xsl:template match="standard">
 <xsl:variable name="myid" select="@id"/>
@@ -546,7 +558,7 @@
 <xsl:text>  version: </xsl:text><xsl:value-of select="@version"/><xsl:text>&#x0A;</xsl:text>
 </xsl:template>
 
-<!-- Create a YAML page for each organisation -->
+<!-- Create a Markdown page for each organisation -->
 
 <xsl:template match="organisations">
   <xsl:apply-templates/>
@@ -608,30 +620,8 @@
 <xsl:text>    - </xsl:text><xsl:value-of select="../@id"/><xsl:text>&#x0A;</xsl:text>
 </xsl:template>
 
-<!-- Create JSON file with all organisations -->
 
-<xsl:template match="organisations" mode="data">
-  <xsl:result-document href="_data/orgs.json">
-    <xsl:text>{</xsl:text>
-    <xsl:apply-templates mode="data"/>
-    <xsl:text>}</xsl:text>
-  </xsl:result-document>
-</xsl:template>
-
-<xsl:template match="orgkey" mode="data">
-  <xsl:variable name="mykey" select="@key"/>
-  <xsl:text>"</xsl:text><xsl:value-of select="@key"/><xsl:text>": {</xsl:text>
-  <xsl:text>"short": "</xsl:text><xsl:value-of select="@short"/><xsl:text>", </xsl:text>
-  <xsl:text>"long": "</xsl:text><xsl:value-of select="@long"/><xsl:text>", </xsl:text>
-  <xsl:text>"uri": "</xsl:text><xsl:value-of select="@uri"/><xsl:text>", </xsl:text>
-  <xsl:text>"owns": "</xsl:text><xsl:value-of
-     select="count(/standards/standards/document[@orgid=$mykey])+count(/standards//profilespec[@orgid=$mykey])"/><xsl:text>"}</xsl:text>
-  <xsl:if test="not(position()=last())">
-    <xsl:text>,</xsl:text>
-  </xsl:if>
-</xsl:template>
-
-<!-- Create a YAML page for each responsible party -->
+<!-- Create a Markdown page for each responsible party -->
 
 <xsl:template match="responsibleparties">
   <xsl:apply-templates/>
@@ -661,26 +651,9 @@
 <xsl:text>    - </xsl:text><xsl:value-of select="../@id"/><xsl:text>&#x0A;</xsl:text>
 </xsl:template>
 
-<!-- Create JSON file listing all responsible parties -->
 
-<xsl:template match="responsibleparties" mode="data">
-  <xsl:result-document href="_data/rp.json">
-    <xsl:text>{</xsl:text>
-    <xsl:apply-templates mode="data"/>
-    <xsl:text>}</xsl:text>
-  </xsl:result-document>
-</xsl:template>
 
-<xsl:template match="rpkey" mode="data">
-  <xsl:text>"</xsl:text><xsl:value-of select="@key"/><xsl:text>": {</xsl:text>
-  <xsl:text>"short": "</xsl:text><xsl:value-of select="@short"/><xsl:text>", </xsl:text>
-  <xsl:text>"long": "</xsl:text><xsl:value-of select="@long"/><xsl:text>"}</xsl:text>
-  <xsl:if test="not(position()=last())">
-    <xsl:text>,</xsl:text>
-  </xsl:if>
-</xsl:template>
-
-<!-- Create a YAML page for each taxaonomy node -->
+<!-- Create a Markdown page for each taxaonomy node -->
 
 <xsl:template match="taxonomy">
   <xsl:apply-templates select="node">
@@ -779,6 +752,185 @@
   </xsl:if>
 </xsl:template>
 
+
+<!-- ============================================================================ -->
+<!--                       JSON helper data structures                            -->
+<!-- ============================================================================ -->
+
+<!-- The JSON objects functions a extra lookup datastructures, due to the fact 
+     that Gatsby probably only allow one graphql query in a template and because
+     there is no relationships between the indivisual markdown elements -->
+
+
+<!-- Create a JSON file with all standards -->
+
+<xsl:template match="records" mode="standard-json">
+  <xsl:result-document href="_data/standards.json">
+    <xsl:text>{</xsl:text>
+    <xsl:apply-templates select="standard" mode="standard-json"/>
+    <xsl:text>}</xsl:text>
+  </xsl:result-document>
+</xsl:template>
+
+<xsl:template match="standard" mode="standard-json">
+  <xsl:variable name="myorg" select="document/@orgid"/>
+  <xsl:text>"</xsl:text><xsl:value-of select="@id"/><xsl:text>": {</xsl:text>
+  <xsl:text>"orgid": "</xsl:text><xsl:value-of select="document/@orgid"/><xsl:text>", </xsl:text>
+  <xsl:text>"orgshort": "</xsl:text><xsl:value-of select="/standards/organisations/orgkey[@key=$myorg]/@short"/><xsl:text>", </xsl:text>
+  <xsl:text>"pubnum": "</xsl:text><xsl:value-of select="document/@pubnum"/><xsl:text>", </xsl:text>
+  <xsl:text>"title": "</xsl:text><xsl:value-of select="document/@title"/><xsl:text>", </xsl:text>
+  <xsl:text>"date": "</xsl:text><xsl:value-of select="document/@date"/><xsl:text>", </xsl:text>
+  <xsl:text>"version": "</xsl:text><xsl:value-of select="document/@version"/><xsl:text>"}</xsl:text>
+  <xsl:if test="not(position()=last())">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
+</xsl:template>
+
+<!-- Create a JSON file with all coverdocs -->
+
+<xsl:template match="records" mode="coverdoc-json">
+  <xsl:result-document href="_data/coverdocs.json">
+    <xsl:text>{</xsl:text>
+    <xsl:apply-templates select="coverdoc" mode="coverdoc-json"/>
+    <xsl:text>}</xsl:text>
+  </xsl:result-document>
+</xsl:template>
+
+<xsl:template match="coverdoc" mode="coverdoc-json">
+  <xsl:variable name="myorg" select="document/@orgid"/>
+  <xsl:text>"</xsl:text><xsl:value-of select="@id"/><xsl:text>": {</xsl:text>
+  <xsl:text>"orgid": "</xsl:text><xsl:value-of select="document/@orgid"/><xsl:text>", </xsl:text>
+  <xsl:text>"orgshort": "</xsl:text><xsl:value-of select="/standards/organisations/orgkey[@key=$myorg]/@short"/><xsl:text>", </xsl:text>
+  <xsl:text>"pubnum": "</xsl:text><xsl:value-of select="document/@pubnum"/><xsl:text>", </xsl:text>
+  <xsl:text>"title": "</xsl:text><xsl:value-of select="document/@title"/><xsl:text>", </xsl:text>
+  <xsl:text>"date": "</xsl:text><xsl:value-of select="document/@date"/><xsl:text>", </xsl:text>
+  <xsl:text>"version": "</xsl:text><xsl:value-of select="document/@version"/><xsl:text>"}</xsl:text>
+  <xsl:if test="not(position()=last())">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
+</xsl:template>
+
+
+<!-- Create a JSON file with all profilespecs -->
+
+<xsl:template match="records" mode="profilespec-json">
+  <xsl:result-document href="_data/profilespecs.json">
+    <xsl:text>{</xsl:text>
+    <xsl:apply-templates select="profilespec" mode="profilespec-json"/>
+    <xsl:text>}</xsl:text>
+  </xsl:result-document>
+</xsl:template>
+
+<xsl:template match="profilespec" mode="profilespec-json">
+  <xsl:variable name="myorg" select="@orgid"/>
+  <xsl:text>"</xsl:text><xsl:value-of select="@id"/><xsl:text>": {</xsl:text>
+  <xsl:text>"orgid": "</xsl:text><xsl:value-of select="@orgid"/><xsl:text>", </xsl:text>
+  <xsl:text>"orgshort": "</xsl:text><xsl:value-of select="/standards/organisations/orgkey[@key=$myorg]/@short"/><xsl:text>", </xsl:text>
+  <xsl:text>"pubnum": "</xsl:text><xsl:value-of select="@pubnum"/><xsl:text>", </xsl:text>
+  <xsl:text>"title": "</xsl:text><xsl:value-of select="document/@title"/><xsl:text>"}</xsl:text>
+  <xsl:if test="not(position()=last())">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
+</xsl:template>
+
+
+<!-- Create a JSON file with all profiles -->
+
+<xsl:template match="records" mode="profile-json">
+  <xsl:result-document href="_data/profiles.json">
+    <xsl:text>{</xsl:text>
+    <xsl:apply-templates select="profile" mode="profile-json"/>
+    <xsl:text>}</xsl:text>
+  </xsl:result-document>
+</xsl:template>
+
+<xsl:template match="profile" mode="profile-json">
+<!--
+  <xsl:variable name="myorg" select="document/@orgid"/>
+  <xsl:text>"</xsl:text><xsl:value-of select="@id"/><xsl:text>": {</xsl:text>
+  <xsl:text>"orgid": "</xsl:text><xsl:value-of select="document/@orgid"/><xsl:text>", </xsl:text>
+  <xsl:text>"orgshort": "</xsl:text><xsl:value-of select="/standards/organisations/orgkey[@key=$myorg]/@short"/><xsl:text>", </xsl:text>
+  <xsl:text>"pubnum": "</xsl:text><xsl:value-of select="document/@pubnum"/><xsl:text>", </xsl:text>
+  <xsl:text>"title": "</xsl:text><xsl:value-of select="document/@title"/><xsl:text>", </xsl:text>
+  <xsl:text>"date": "</xsl:text><xsl:value-of select="document/@date"/><xsl:text>", </xsl:text>
+  <xsl:text>"version": "</xsl:text><xsl:value-of select="document/@version"/><xsl:text>"}</xsl:text>
+  <xsl:if test="not(position()=last())">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
+-->
+  </xsl:template>
+
+<!-- Create JSON file with all service profiles -->
+
+<xsl:template match="records" mode="serviceprofile-json">
+  <xsl:result-document href="_data/serviceprofiles.json">
+    <xsl:text>{</xsl:text>
+    <xsl:apply-templates select="serviceprofile" mode="serviceprofile-json"/>
+    <xsl:text>}</xsl:text>
+  </xsl:result-document>
+</xsl:template>
+
+<xsl:template match="serviceprofile" mode="serviceprofile-json">
+<!--
+  <xsl:variable name="myorg" select="document/@orgid"/>
+-->
+  <xsl:text>"</xsl:text><xsl:value-of select="@id"/><xsl:text>": {</xsl:text>
+<!--
+  <xsl:text>"orgid": "</xsl:text><xsl:value-of select="document/@orgid"/><xsl:text>", </xsl:text>
+  <xsl:text>"orgshort": "</xsl:text><xsl:value-of select="/standards/organisations/orgkey[@key=$myorg]/@short"/><xsl:text>", </xsl:text>
+  <xsl:text>"pubnum": "</xsl:text><xsl:value-of select="document/@pubnum"/><xsl:text>", </xsl:text>
+-->
+  <xsl:text>"title": "</xsl:text><xsl:value-of select="@title"/><xsl:text>"}</xsl:text>
+  <xsl:if test="not(position()=last())">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
+</xsl:template>
+
+<!-- Create JSON file with all organisations -->
+
+<xsl:template match="organisations" mode="json">
+  <xsl:result-document href="_data/orgs.json">
+    <xsl:text>{</xsl:text>
+    <xsl:apply-templates mode="json"/>
+    <xsl:text>}</xsl:text>
+  </xsl:result-document>
+</xsl:template>
+
+<xsl:template match="orgkey" mode="json">
+  <xsl:variable name="mykey" select="@key"/>
+  <xsl:text>"</xsl:text><xsl:value-of select="@key"/><xsl:text>": {</xsl:text>
+  <xsl:text>"short": "</xsl:text><xsl:value-of select="@short"/><xsl:text>", </xsl:text>
+  <xsl:text>"long": "</xsl:text><xsl:value-of select="@long"/><xsl:text>", </xsl:text>
+  <xsl:text>"uri": "</xsl:text><xsl:value-of select="@uri"/><xsl:text>", </xsl:text>
+  <xsl:text>"owns": "</xsl:text><xsl:value-of
+     select="count(/standards/standards/document[@orgid=$mykey])+count(/standards//profilespec[@orgid=$mykey])"/><xsl:text>"}</xsl:text>
+  <xsl:if test="not(position()=last())">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
+</xsl:template>
+
+
+
+<!-- Create JSON file listing all responsible parties -->
+
+<xsl:template match="responsibleparties" mode="json">
+  <xsl:result-document href="_data/rp.json">
+    <xsl:text>{</xsl:text>
+    <xsl:apply-templates mode="json"/>
+    <xsl:text>}</xsl:text>
+  </xsl:result-document>
+</xsl:template>
+
+<xsl:template match="rpkey" mode="json">
+  <xsl:text>"</xsl:text><xsl:value-of select="@key"/><xsl:text>": {</xsl:text>
+  <xsl:text>"short": "</xsl:text><xsl:value-of select="@short"/><xsl:text>", </xsl:text>
+  <xsl:text>"long": "</xsl:text><xsl:value-of select="@long"/><xsl:text>"}</xsl:text>
+  <xsl:if test="not(position()=last())">
+    <xsl:text>,</xsl:text>
+  </xsl:if>
+</xsl:template>
+
+
 <!-- Create JSON Taxonomy Tree -->
 
 <xsl:template match="taxonomy" mode="json-taxonomy">
@@ -816,21 +968,21 @@
 
 <!-- Create JSON list of the taxonomy nodes -->
 
-<xsl:template match="taxonomy" mode="data">
+<xsl:template match="taxonomy" mode="json">
   <xsl:result-document href="_data/nodes.json">
     <xsl:text>{</xsl:text>
-    <xsl:apply-templates mode="data"/>
+    <xsl:apply-templates mode="json"/>
     <xsl:text>"eof-node-tree": {}</xsl:text>
     <xsl:text>}</xsl:text>
   </xsl:result-document>
 </xsl:template>
 
 
-<xsl:template match="node" mode="data">
+<xsl:template match="node" mode="json">
   <xsl:text>"</xsl:text><xsl:value-of select="@id"/><xsl:text>": {</xsl:text>
   <xsl:text>"title": "</xsl:text><xsl:value-of select="@title"/><xsl:text>",</xsl:text>
   <xsl:text>"level": "</xsl:text><xsl:value-of select="@level"/><xsl:text>"},</xsl:text>
-  <xsl:apply-templates select="node" mode="data"/>
+  <xsl:apply-templates select="node" mode="json"/>
 </xsl:template>
 
 

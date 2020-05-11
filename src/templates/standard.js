@@ -1,8 +1,11 @@
 import React from 'react'
 import Element from '../components/element'
+import Responsibleparty from '../components/responsibleparty'
 import Status from '../components/status'
 import UUID from '../components/uuid'
-import { graphql } from 'gatsby'
+import { Link, graphql } from 'gatsby'
+import orgs from '../data/data/orgs.json'
+import sp from '../data/data/serviceprofiles.json'
 
 export const query = graphql`
   query($nispid: String!) {
@@ -27,6 +30,8 @@ export const query = graphql`
           }
         }
         uuid
+        coverdocument
+        consumers
       }
       html
     }
@@ -36,6 +41,8 @@ export const query = graphql`
 const StandardTemplate = props => {
   const standard = props.data.markdownRemark
 
+  console.log(standard)
+
   return (
     <Element type="Standard">
       <div className="metaBlock">
@@ -44,7 +51,9 @@ const StandardTemplate = props => {
         <div className="metaElementSet">
           <dl className="refOrg">
             <dt className="dataLabel">Org</dt>
-            <dd className="dataValue">{standard.frontmatter.document.org}</dd>
+            <dd className="dataValue">
+              {orgs[standard.frontmatter.document.org].short}
+            </dd>
           </dl>
           <dl className="refPubnum">
             <dt className="dataLabel">Pubnum</dt>
@@ -68,6 +77,9 @@ const StandardTemplate = props => {
           <dd className="dataValue">{standard.frontmatter.document.title}</dd>
         </dl>
       </div>
+
+      <Responsibleparty rp={standard.frontmatter.rp} />
+
       <h3>Applicability</h3>
 
       <dl>
@@ -79,8 +91,56 @@ const StandardTemplate = props => {
 
       <Status status={standard.frontmatter.status} />
       <UUID uuid={standard.frontmatter.uuid} />
+
+      <Relationships
+        coverdoc={standard.frontmatter.coverdocument}
+        consumers={standard.frontmatter.consumers}
+      />
     </Element>
   )
 }
 
 export default StandardTemplate
+
+const Relationships = ({ coverdoc, consumers }) => {
+  console.log('coverdoc ', coverdoc)
+  console.log('consumers ', consumers)
+  if (coverdoc !== null || consumers.length > 0) {
+    return (
+      <>
+        <h3>Relationships</h3>
+        <div className="metaList">
+          <Coverdoc coverdoc={coverdoc} />
+          <Consumers consumers={consumers} />
+        </div>
+      </>
+    )
+  } else {
+    return null
+  }
+}
+
+const Coverdoc = ({ coverdoc }) => {
+  return <div></div>
+}
+
+const Consumers = ({ consumers }) => {
+  if (consumers.length > 0) {
+    return (
+      <>
+        <p>This standard is used by the following service profiles:</p>
+        <ul>
+          {consumers.map(edge => {
+            return (
+              <li>
+                <Link to={`/serviceprofile/${edge}.html`}>
+                  {sp[edge].title}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </>
+    )
+  } else return null
+}

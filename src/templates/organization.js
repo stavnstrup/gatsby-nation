@@ -55,16 +55,7 @@ export const OrganizationTemplate = ({ data }) => {
         which {pluralVerb}:
       </p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Pubnum</th>
-            <th>Title</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <ListAllOrgStandards />
-      </table>
+      <ListAllOrgStandards />
     </Element>
   )
 }

@@ -1,8 +1,7 @@
 import React from 'react'
-import { Link } from 'gatsby'
 
 const URI = ({ uri }) => {
-  if (uri) return <Link to={uri}>{uri}</Link>
+  if (uri) return <a href={uri}>{uri}</a>
   else return null
 }
 

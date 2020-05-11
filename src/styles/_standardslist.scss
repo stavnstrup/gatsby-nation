@@ -42,11 +42,11 @@
 
 // Legend box used in Standards list
 
-.legendbox {
+ul.legendbox {
   border: 1px solid $nisp-gray;
   display: inline;
   list-style: none;
-  //margin-right: -32px;
+  margin-left: 0;
   padding: 8px;
   padding-right: 0;
 
