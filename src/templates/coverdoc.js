@@ -83,9 +83,9 @@ const CoverdocTemplate = props => {
         <ul>
           {coverdoc.frontmatter.coverstandards.map(edge => {
             return (
-              <li>
+              <li key={edge}>
                 <Link to={`/standard/${edge}.html`}>
-                  {stds[edge].title} ({stds[edge].orgshort} {stds[edge].pubnum})
+                  {`${stds[edge].title} (${stds[edge].orgshort} ${stds[edge].pubnum})`}
                 </Link>
               </li>
             )
