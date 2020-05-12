@@ -102,7 +102,7 @@ const StandardTemplate = props => {
 export default StandardTemplate
 
 const Relationships = ({ coverdoc, consumers }) => {
-  if (coverdoc !== null || consumers.length > 0) {
+  if (coverdoc || consumers) {
     return (
       <>
         <h3>Relationships</h3>
@@ -118,7 +118,7 @@ const Relationships = ({ coverdoc, consumers }) => {
 }
 
 const Coverdoc = ({ coverdoc }) => {
-  if (coverdoc !== null)
+  if (coverdoc !== null) {
     return (
       <>
         <p>This standards is covered by:</p>
@@ -131,13 +131,15 @@ const Coverdoc = ({ coverdoc }) => {
         </ul>
       </>
     )
+  } else return null
 }
 
 const Consumers = ({ consumers }) => {
+  const plural = consumers.length > 1 ? 's' : ''
   if (consumers.length > 0) {
     return (
       <>
-        <p>This standard is used by the following service profiles:</p>
+        <p>This standard is used by the following service profile{plural}:</p>
         <ul>
           {consumers.map(edge => {
             return (

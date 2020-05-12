@@ -3,7 +3,7 @@ import { Link } from 'gatsby'
 import Footer from '../components/footer'
 import HomeIcon from '../images/home.svg'
 
-const Element = prop => {
+const Element = ({ type, id = '', children }) => {
   return (
     <>
       <div className="elementHead">
@@ -11,14 +11,18 @@ const Element = prop => {
           <Link to="/">
             <img className="homeIcon" src={HomeIcon} alt="Home" />
           </Link>
-          NISP {prop.type}
+          NISP {type}
         </p>
-        <p className="id">
-          <strong>ID:</strong> {prop.id}
-        </p>
+        {id ? (
+          <p className="id">
+            <strong>ID:</strong> {id}
+          </p>
+        ) : (
+          ''
+        )}
       </div>
       <div className="mainContent elementContent">
-        {prop.children}
+        {children}
         <Footer />
       </div>
     </>

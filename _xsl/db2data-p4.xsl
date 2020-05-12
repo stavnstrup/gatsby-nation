@@ -13,6 +13,7 @@
   <xsl:apply-templates select="records" mode="profile-json"/>
   <xsl:apply-templates select="records" mode="profilespec-json"/>
   <xsl:apply-templates select="records" mode="serviceprofile-json"/>
+  <xsl:apply-templates select="records"/>
   <xsl:apply-templates select="organisations"/>
   <xsl:apply-templates select="responsibleparties"/>
   <xsl:apply-templates select="taxonomy"/>
@@ -417,7 +418,7 @@
 <xsl:text>  date: "</xsl:text><xsl:value-of select="document/@date"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>  version: "</xsl:text><xsl:value-of select="document/@version"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>coverstandards:&#x0A;</xsl:text>
-<xsl:apply-templates select="coverstandards"/>
+<xsl:apply-templates select="coverstandards/refstandard" mode="covered"/>
 <xsl:text>rp: </xsl:text><xsl:value-of select="responsibleparty/@rpref"/><xsl:text>&#x0A;</xsl:text>
 <xsl:apply-templates select="status"/>
 <xsl:apply-templates select="uuid"/>
@@ -429,6 +430,10 @@
 </xsl:template>
 
 <xsl:template match="coverstandards"><xsl:apply-templates/></xsl:template>
+
+<xsl:template match="refstandard" mode="covered">
+<xsl:text>  - </xsl:text><xsl:value-of select="@refid"/><xsl:text>&#x0A;</xsl:text>
+</xsl:template>
 
 
 <!-- Create a Markdown page of a profilespec -->
@@ -757,7 +762,7 @@
 <!--                       JSON helper data structures                            -->
 <!-- ============================================================================ -->
 
-<!-- The JSON objects functions a extra lookup datastructures, due to the fact 
+<!-- The JSON objects functions a extra lookup datastructures, due to the fact
      that Gatsby probably only allow one graphql query in a template and because
      there is no relationships between the indivisual markdown elements -->
 

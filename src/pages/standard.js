@@ -3,8 +3,6 @@ import Element from '../components/element'
 import { graphql, useStaticQuery } from 'gatsby'
 import OverviewAllOrgStandards from '../components/overviewallorgstandards'
 
-// import orglist from '../data/data/orgs.json'
-
 const StandardList = () => {
   const orgQuery = useStaticQuery(graphql`
     query {
@@ -29,8 +27,6 @@ const StandardList = () => {
       }
     }
   `)
-
-  const orglist = orgQuery.allMarkdownRemark.edges
 
   return (
     <Element type="Standards">
