@@ -1,7 +1,7 @@
-import React from "react"
-import { Link } from "gatsby"
-import Footer from "../components/footer"
-import HomeIcon from "../images/home.svg"
+import React from 'react'
+import { Link } from 'gatsby'
+import Footer from '../components/footer'
+import HomeIcon from '../images/home.svg'
 
 const Element = prop => {
   return (
@@ -12,6 +12,9 @@ const Element = prop => {
             <img className="homeIcon" src={HomeIcon} alt="Home" />
           </Link>
           NISP {prop.type}
+        </p>
+        <p className="id">
+          <strong>ID:</strong> {prop.id}
         </p>
       </div>
       <div className="mainContent elementContent">

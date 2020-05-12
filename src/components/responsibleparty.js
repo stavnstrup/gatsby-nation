@@ -11,7 +11,7 @@ const Responsibleparty = ({ rp }) => {
         <dl>
           <dt className="dataLabel">Name</dt>
           <dd className="dataValue">
-            <Link to={`/responsibleparty/${rp}.html`}>{rps[rp].short}</Link>
+            <Link to={`/responsibleparty/${rp}.html`}>{rps[rp].long}</Link>
           </dd>
         </dl>
       </div>

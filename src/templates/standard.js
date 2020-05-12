@@ -5,6 +5,7 @@ import Status from '../components/status'
 import UUID from '../components/uuid'
 import { Link, graphql } from 'gatsby'
 import orgs from '../data/data/orgs.json'
+import cds from '../data/data/coverdocs.json'
 import sp from '../data/data/serviceprofiles.json'
 
 export const query = graphql`
@@ -41,10 +42,8 @@ export const query = graphql`
 const StandardTemplate = props => {
   const standard = props.data.markdownRemark
 
-  console.log(standard)
-
   return (
-    <Element type="Standard">
+    <Element type="Standard" id={standard.frontmatter.nispid}>
       <div className="metaBlock">
         <h3>Reference document</h3>
 
@@ -78,8 +77,6 @@ const StandardTemplate = props => {
         </dl>
       </div>
 
-      <Responsibleparty rp={standard.frontmatter.rp} />
-
       <h3>Applicability</h3>
 
       <dl>
@@ -88,6 +85,8 @@ const StandardTemplate = props => {
           <div dangerouslySetInnerHTML={{ __html: standard.html }} />
         </dd>
       </dl>
+
+      <Responsibleparty rp={standard.frontmatter.rp} />
 
       <Status status={standard.frontmatter.status} />
       <UUID uuid={standard.frontmatter.uuid} />
@@ -103,8 +102,6 @@ const StandardTemplate = props => {
 export default StandardTemplate
 
 const Relationships = ({ coverdoc, consumers }) => {
-  console.log('coverdoc ', coverdoc)
-  console.log('consumers ', consumers)
   if (coverdoc !== null || consumers.length > 0) {
     return (
       <>
@@ -121,7 +118,19 @@ const Relationships = ({ coverdoc, consumers }) => {
 }
 
 const Coverdoc = ({ coverdoc }) => {
-  return <div></div>
+  if (coverdoc !== null)
+    return (
+      <>
+        <p>This standards is covered by:</p>
+        <ul>
+          <li key="1">
+            <Link to={`/coverdoc/${coverdoc[0]}.html`}>
+              {cds[coverdoc[0]].orgshort} {cds[coverdoc[0]].pubnum}
+            </Link>
+          </li>
+        </ul>
+      </>
+    )
 }
 
 const Consumers = ({ consumers }) => {
@@ -132,7 +141,7 @@ const Consumers = ({ consumers }) => {
         <ul>
           {consumers.map(edge => {
             return (
-              <li>
+              <li key={edge}>
                 <Link to={`/serviceprofile/${edge}.html`}>
                   {sp[edge].title}
                 </Link>
