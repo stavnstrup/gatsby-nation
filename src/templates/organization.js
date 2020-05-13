@@ -2,6 +2,7 @@ import React from 'react'
 import Element from '../components/element'
 import URI from '../components/uri'
 import { graphql } from 'gatsby'
+// import std from '../data/data/standards.json'
 
 export const query = graphql`
   query($nispid: String!) {
@@ -34,14 +35,14 @@ export const query = graphql`
   }
 `
 
-export const OrganizationTemplate = ({ data }) => {
+const Organizationtemplate = ({ data }) => {
   const org = data.markdownRemark.frontmatter
 
   const plural = org.stats.standards.owns > 0 ? '' : 's'
   const pluralVerb = org.stats.standards.owns > 0 ? 'is' : 'are'
 
   return (
-    <Element type="Organizations">
+    <Element type="Organizations" id={org.key}>
       <h4>
         {org.long} ({org.short}}) which {pluralVerb}:
       </h4>
@@ -54,14 +55,8 @@ export const OrganizationTemplate = ({ data }) => {
         {org.short} own{plural} {org.stats.standards.owns} standard{plural},
         which {pluralVerb}:
       </p>
-
-      <ListAllOrgStandards />
     </Element>
   )
 }
 
-//
-
-const ListAllOrgStandards = () => {
-  return <div></div>
-}
+export default Organizationtemplate

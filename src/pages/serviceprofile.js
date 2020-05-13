@@ -1,7 +1,7 @@
-import React from "react"
-import Element from "../components/element"
-import { Link, graphql, useStaticQuery } from "gatsby"
-import orgs from "../data/data/orgs.json"
+import React from 'react'
+import Element from '../components/element'
+import { Link, graphql, useStaticQuery } from 'gatsby'
+import orgs from '../data/data/orgs.json'
 
 //import "../styles/normalize.min.css"
 //import "../styles/main.scss"
@@ -52,7 +52,7 @@ const ServiceprofileList = () => {
 
                 <td>
                   <Link
-                    to={`/serviceprofile/${edge.node.frontmatter.nisp_id}.html`}
+                    to={`/serviceprofile/${edge.node.frontmatter.nispid}.html`}
                   >
                     {edge.node.frontmatter.title}
                   </Link>

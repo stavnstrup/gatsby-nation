@@ -21,8 +21,8 @@
 
   <!--
   <xsl:apply-templates select="taxonomy" mode="json-taxonomy"/>
-  <xsl:apply-templates select="taxonomy" mode="json"/>
   -->
+  <xsl:apply-templates select="taxonomy" mode="json-nodes"/>
   <xsl:apply-templates select="organisations" mode="json"/>
   <xsl:apply-templates select="responsibleparties" mode="json"/>
   <xsl:result-document href="_data/stat.json">
@@ -361,9 +361,6 @@
 <xsl:text>type: </xsl:text><xsl:value-of select="@type"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>title: </xsl:text><xsl:value-of select="@title"/><xsl:text>&#x0A;</xsl:text>
 <xsl:apply-templates select="refprofilespec"/>
-<xsl:if test="description">
-<xsl:text>description: </xsl:text><xsl:apply-templates select="description"/><xsl:text>&#x0A;</xsl:text>
-</xsl:if>
 <xsl:text>taxonomy:&#x0A;</xsl:text>
 <xsl:apply-templates select="reftaxonomy"/>
 <xsl:text>refgroup:&#x0A;</xsl:text>
@@ -373,6 +370,7 @@
 <xsl:text>parents:&#x0A;</xsl:text>
 <xsl:apply-templates select="/standards//refprofile[@refid=$myid]" mode="listparent"/>
 <xsl:text>---&#x0A;</xsl:text>
+<xsl:apply-templates select="description"/>
 </xsl:result-document>
 </xsl:template>
 
@@ -385,16 +383,18 @@
 <xsl:template match="refgroup">
 <xsl:text>  - obligation: </xsl:text><xsl:value-of select="@obligation"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>    lifecycle: </xsl:text><xsl:value-of select="@lifecycle"/><xsl:text>&#x0A;</xsl:text>
+<xsl:text>    description: </xsl:text><xsl:apply-templates select="description"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>    standards: </xsl:text><xsl:text>&#x0A;</xsl:text>
 <xsl:apply-templates select="refstandard"/>
-<xsl:text>    description: </xsl:text><xsl:apply-templates select="description"/><xsl:text>&#x0A;</xsl:text>
 </xsl:template>
 
 
 <xsl:template match="description"><xsl:value-of select="translate(normalize-space(.),':',' ')"/></xsl:template>
 
 <xsl:template match="refstandard">
-<xsl:text>    - refid: </xsl:text><xsl:value-of select="@refid"/><xsl:text>&#x0A;</xsl:text>
+<xsl:variable name="myid" select="@refid"/>
+<xsl:text>    - srefid: </xsl:text><xsl:value-of select="@refid"/><xsl:text>&#x0A;</xsl:text>
+<xsl:text>      etype: </xsl:text><xsl:value-of select="local-name(/standards/records/*[@id=$myid])"/><xsl:text>&#x0A;</xsl:text>
 </xsl:template>
 
 <!-- Create a Markdown page of a coverdoc -->
@@ -445,9 +445,9 @@
 <xsl:text>layout: profilespec&#x0A;</xsl:text>
 <xsl:text>element: Profilespec&#x0A;</xsl:text>
 <xsl:text>nispid: </xsl:text><xsl:value-of select="@id"/><xsl:text>&#x0A;</xsl:text>
-<xsl:text>orgid: </xsl:text><xsl:value-of select="@orgid"/><xsl:text>&#x0A;</xsl:text>
+<xsl:text>org: </xsl:text><xsl:value-of select="@orgid"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>pubnum: "</xsl:text><xsl:value-of select="@pubnum"/><xsl:text>"&#x0A;</xsl:text>
-<xsl:text>pubdate: </xsl:text><xsl:value-of select="@date"/><xsl:text>&#x0A;</xsl:text>
+<xsl:text>date: "</xsl:text><xsl:value-of select="@date"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>title: "</xsl:text><xsl:value-of select="normalize-space(@title)"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>version: "</xsl:text><xsl:value-of select="@version"/><xsl:text>"&#x0A;</xsl:text>
 <xsl:text>note:</xsl:text><xsl:apply-templates select="@note"/><xsl:text>&#x0A;</xsl:text>
@@ -676,7 +676,6 @@
 <xsl:text>nispid: </xsl:text><xsl:value-of select="@id"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>parent: </xsl:text><xsl:value-of select="$parent"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>title: </xsl:text><xsl:value-of select="@title"/><xsl:text>&#x0A;</xsl:text>
-<xsl:text>description: </xsl:text><xsl:value-of select="translate(normalize-space(@description),':',' ')"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>level: </xsl:text><xsl:value-of select="@level"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>emUUID: </xsl:text><xsl:value-of select="@emUUID"/><xsl:text>&#x0A;</xsl:text>
 <xsl:text>usage:&#x0A;</xsl:text>
@@ -691,6 +690,7 @@
 <xsl:text>  serviceprofiles:&#x0A;</xsl:text>
 <xsl:apply-templates select="//reftaxonomy[@refid=$myid]" mode="nodeserviceprofiles"/>
 <xsl:text>---&#x0A;</xsl:text>
+<xsl:value-of select="translate(normalize-space(@description),':',' ')"/><xsl:text>&#x0A;</xsl:text>
 </xsl:result-document>
 <xsl:apply-templates select="node">
   <xsl:with-param name="parent" select="@id"/>
@@ -973,21 +973,21 @@
 
 <!-- Create JSON list of the taxonomy nodes -->
 
-<xsl:template match="taxonomy" mode="json">
+<xsl:template match="taxonomy" mode="json-nodes">
   <xsl:result-document href="_data/nodes.json">
     <xsl:text>{</xsl:text>
-    <xsl:apply-templates mode="json"/>
-    <xsl:text>"eof-node-tree": {}</xsl:text>
+    <xsl:apply-templates mode="json-nodes"/>
+    <xsl:text>"eof-node-tree": {"title": "undefined node", "level": 1}</xsl:text>
     <xsl:text>}</xsl:text>
   </xsl:result-document>
 </xsl:template>
 
 
-<xsl:template match="node" mode="json">
+<xsl:template match="node" mode="json-nodes">
   <xsl:text>"</xsl:text><xsl:value-of select="@id"/><xsl:text>": {</xsl:text>
   <xsl:text>"title": "</xsl:text><xsl:value-of select="@title"/><xsl:text>",</xsl:text>
   <xsl:text>"level": "</xsl:text><xsl:value-of select="@level"/><xsl:text>"},</xsl:text>
-  <xsl:apply-templates select="node" mode="json"/>
+  <xsl:apply-templates select="node" mode="json-nodes"/>
 </xsl:template>
 
 

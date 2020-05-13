@@ -1,7 +1,7 @@
-import React from "react"
-import Element from "../components/element"
-import { Link, graphql, useStaticQuery } from "gatsby"
-import orgs from "../data/data/orgs.json"
+import React from 'react'
+import Element from '../components/element'
+import { Link, graphql, useStaticQuery } from 'gatsby'
+import orgs from '../data/data/orgs.json'
 
 //import "../styles/normalize.min.css"
 //import "../styles/main.scss"
@@ -50,9 +50,7 @@ const ProfileList = () => {
                   </Link>
                 </td>
                 <td>
-                  <Link
-                    to={`/serviceprofile/${edge.node.frontmatter.nispid}.html`}
-                  >
+                  <Link to={`/profile/${edge.node.frontmatter.nispid}.html`}>
                     {edge.node.frontmatter.title}
                   </Link>
                 </td>

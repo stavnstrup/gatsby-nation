@@ -4,8 +4,8 @@ import Responsibleparty from '../components/responsibleparty'
 import Status from '../components/status'
 import UUID from '../components/uuid'
 import { Link, graphql } from 'gatsby'
-import orgs from '../data/data/orgs.json'
 import cds from '../data/data/coverdocs.json'
+import orgs from '../data/data/orgs.json'
 import sp from '../data/data/serviceprofiles.json'
 
 export const query = graphql`
@@ -135,23 +135,25 @@ const Coverdoc = ({ coverdoc }) => {
 }
 
 const Consumers = ({ consumers }) => {
-  const plural = consumers.length > 1 ? 's' : ''
-  if (consumers.length > 0) {
-    return (
-      <>
-        <p>This standard is used by the following service profile{plural}:</p>
-        <ul>
-          {consumers.map(edge => {
-            return (
-              <li key={edge}>
-                <Link to={`/serviceprofile/${edge}.html`}>
-                  {sp[edge].title}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </>
-    )
+  if (consumers) {
+    const plural = consumers.length > 1 ? 's' : ''
+    if (consumers.length > 0) {
+      return (
+        <>
+          <p>This standard is used by the following service profile{plural}:</p>
+          <ul>
+            {consumers.map(edge => {
+              return (
+                <li key={edge}>
+                  <Link to={`/serviceprofile/${edge}.html`}>
+                    {sp[edge].title}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      )
+    } else return null
   } else return null
 }

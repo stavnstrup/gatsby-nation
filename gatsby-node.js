@@ -54,6 +54,11 @@ exports.createSchemaCustomization = ({ actions }) => {
     type MarkdownRemarkFrontmatterStatsServiceprofiles {
       references: [String]
     }
+
+
+
+
+
     `
   createTypes(typeDefs)
 }
